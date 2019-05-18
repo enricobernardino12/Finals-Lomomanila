@@ -1,0 +1,289 @@
+{% extends "base.html" %}
+{% block title %}- PROFILE{% endblock %}
+
+{% block content %}
+<script>
+    'use strict';
+        document.addEventListener('DOMContentLoaded', function () {
+        // Modals
+        var rootEl = document.documentElement;
+        var $modals = getAll('.modal');
+        var $modalButtons = getAll('.modal-button');
+        var $modalCloses = getAll('.modal-close, .delete, .modal-card-foot .button, .delete .esc');
+
+        if ($modalButtons.length > 0) {
+            $modalButtons.forEach(function ($el) {
+            $el.addEventListener('click', function () {
+                var target = $el.dataset.target;
+                var $target = document.getElementById(target);
+                rootEl.classList.add('is-clipped');
+                $target.classList.add('is-active');
+            });
+            });
+        }
+        if ($modalCloses.length > 0) {
+            $modalCloses.forEach(function ($el) {
+            $el.addEventListener('click', function () {
+                closeModals();
+            });
+            });
+        }
+        document.addEventListener('keydown', function (event) {
+            var e = event || window.event;
+            if (e.keyCode === 27) {
+            closeModals();
+            }
+        });
+        function closeModals() {
+            rootEl.classList.remove('is-clipped');
+            $modals.forEach(function ($el) {
+            $el.classList.remove('is-active');
+            });
+        }
+        // Functions
+        function getAll(selector) {
+            return Array.prototype.slice.call(document.querySelectorAll(selector), 0);
+        }
+    });
+</script>
+
+<div class="container is-mobile is-centered" style="margin: 20px 50px;">
+    <div class="columns is-centered">
+        <div class="column is-3">
+            <div class="card">
+                <div class="card-image">
+                    <figure class="image is-4by3">
+                    <a href="#" class="card-footer-item modal-button" data-target="modal-img" aria-haspopup="true" style="">
+                            <img src="https://bulma.io/images/placeholders/256x256.png">
+                    </a>
+                    </figure>
+
+                    <div id="modal-img" class="modal">
+                        <div class="modal-background">
+                            <div class="modal-card" style="margin-top: 150px;">
+                                <header class="modal-card-head">
+                                    <p class="modal-card-title">Edit Profile Picture</p>
+                                    <button class="delete esc" aria-label="close"></button>
+                                </header>
+                                <section class="modal-card-body">
+                                    <div class="content">
+                                        <form method="POST" >
+
+                                            <label class="label is-dark" style="font-size: 10px;">PROFILE PICTURE</label>
+                                            <input class="is-light is-focused" type="file" name="profilePic" placeholder="">
+
+                                    </div>
+                                </section>
+                                    <footer class="modal-card-foot">
+                                        <button class="button1" type="submit" name="submit">UPDATE</button>
+                                        </form>
+                                    </footer>
+                                </div>
+                            </div>
+                        </div>
+
+                </div>
+                <div class="card-content">
+                    <div class="media">
+                    <div class="media-left">
+                        <figure class="image is-48x48">
+                        </figure>
+                    </div>
+                    <div class="media-content">
+                        <p class="title is-4 is-capitalized">
+                            {{ fname }} {{ lname }}
+                        </p>
+                        <p class="subtitle is-6">
+                            {{ username }}
+                        </p>
+                    </div>
+                    </div>
+                
+                    <div class="content">
+                        IG: <a href="https://www.instagram.com/{{ instagram_account }}" target="_blank" style="color: #7A3934;">@{{ instagram_account }}</a>
+                        <br>
+                    </div>
+                </div>
+                
+                <footer class="card-footer">
+                    <a href="#" class="card-footer-item modal-button" data-target="modal-ter" aria-haspopup="true" style="color: #7A3934;">EDIT PROFILE</a>
+                <!-- MODAL -->
+                    <div id="modal-ter" class="modal">
+                        <div class="modal-background">
+                            <div class="modal-card" style="margin-top: 20px;">
+                                <header class="modal-card-head">
+                                    <p class="modal-card-title">Edit Profile</p>
+                                    <button class="delete" aria-label="close"></button>
+                                </header>
+                                <section class="modal-card-body">
+                                    <div class="content">
+                                        {% with messages = get_flashed_messages() %}
+                                        {% if messages %}
+                                            <div class="notification is-danger">
+                                                {{ messages[0] }}. Go to <a href="{{ url_for('main.index') }}">login page</a>. 
+                                            </div>
+                                        {% endif %}
+                                        {% endwith %}
+                                        <form method="POST" action="/editprofile" enctype="multipart/form-data">
+
+
+                                            <label class="label is-dark" style="font-size: 10px;">ABOUT YOURSELF</label>
+                                            <textarea class="textarea is-light is-focused" type="text" name="about_me" placeholder="{{ about_me }}"></textarea>
+                                            <hr>
+
+                                            <label class="label is-dark" style="font-size: 10px;">FAVORITE CAMERA</label>
+                                            <textarea class="input is-light is-focused" style="width:20em;"  type="text" name="favecam" placeholder="{{ favecam }}"></textarea>
+                                            <hr>
+
+                                            <label class="label is-dark" style="font-size: 10px;">FAVORITE ROLL</label>
+                                            <textarea class="input is-light is-focused" style="width:20em;"  type="text" name="faveroll" placeholder="{{ faveroll }}"></textarea>
+                                            <hr>
+
+                                            <label class="label is-dark" style="font-size: 10px;">FAVORITE SUBJECT</label>
+                                            <textarea class="input is-light is-focused" style="width:20em;"  type="text" name="favesubj" placeholder="{{ favesubj }}"></textarea>
+                                            <hr>
+
+                                            <label class="label is-dark" style="font-size: 10px;">INSTAGRAM ACCOUNT</label>
+                                            <textarea class="input is-light is-focused" style="width:20em;"  type="text" name="instagram_account" placeholder="{{ instagram_account }}"></textarea>
+                                            <hr>
+                                            
+                                            
+                                            
+                                    </div>
+                                </section>
+                                    <footer class="modal-card-foot">
+                                        <button class="button1">UPDATE</button>
+                                        </form>
+                                    </footer>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="#" class="card-footer-item modal-button" data-target="modal-ter2" aria-haspopup="true" style="color: #7A3934;">SETTINGS</a>
+                    <!-- MODAL 2 -->
+                    <div id="modal-ter2" class="modal">
+                            <div class="modal-background">
+                                <div class="modal-card" style="margin-top: 20px;">
+                                    <header class="modal-card-head">
+                                        <p class="modal-card-title">Update Information</p>
+                                        <button class="delete" aria-label="close"></button>
+                                    </header>
+                                    <section class="modal-card-body">
+                                        <div class="content">
+                                            <form method="POST" action="/settings/{{ id }}">
+
+                                                <label class="label is-dark" style="font-size: 10px;">USERNAME</label>
+                                                <input class="input is-light is-focused" style="width:20em;" type="text" name="editusername" value="{{ username }}">
+                                                <hr>
+                                                
+                                                <label class="label is-dark" style="font-size: 10px;">FIRST NAME</label>
+                                                <input class="input is-light is-focused" style="width:20em;" type="text" name="editfname" value="{{ fname }}">
+                                                <hr>
+
+                                                <label class="label is-dark" style="font-size: 10px;">LAST NAME</label>
+                                                <input class="input is-light is-focused" style="width:20em;" type="text" name="editlname" value="{{ lname }}">
+                                                <hr>
+
+                                                <div class="columns">
+                                                    <div class="column">
+                                                        <label class="label is-dark" style="font-size: 10px;">GENDER</label>
+                                                        <div class="select is-light">
+                                                            <select name="editgender" value="{{ gender }}">
+                                                                <option> {{ gender }} </option>
+                                                                <option>Male</option>
+                                                                <option>Female</option>
+                                                                <option>Fluid</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="column">
+                                                        <label class="label is-dark" style="font-size: 10px;">BIRTHDATE</label>
+                                                        <input class="input is-light" style="width:15em;" type="date" name="editbdate" value="{{ bdate }}" placeholder="{{ bdate }}" required>
+                                                    </div>
+                                                    <div class="column"></div>
+                                                </div>
+                                                <hr>
+
+                                                <label class="label is-dark" style="font-size: 10px;">EMAIL ADDRESS</label>
+                                                <input class="input is-light is-focused" style="width:20em;" type="text" name="editemail" value="{{ email }}">
+                                                <hr>
+
+                                                <label class="label is-dark" style="font-size: 10px;">PASSWORD</label>
+                                                <input class="input is-light is-focused" style="width:20em;" type="text" name="editpword" value="{{ pword }}">
+
+                                        </div>
+                                    </section>
+                                        <footer class="modal-card-foot">
+                                            <button class="button1" type="submit" name="sumbit">UPDATE</button>
+                                            </form>
+                                        </footer>
+                                </div>
+                            </div>
+                        </div>
+                </footer>
+            </div>
+        </div>
+
+        <div class="column is-6">
+            {% if newPost == 0 %}
+                <p class="subtitle" style="color: white;">No posts yet. Post one now!</p>
+            {% else %}
+                {% for userPost in newPost %}
+                    
+                        <article class="media">
+                            <div class="card">
+                                <div class="card-content">
+                                    <p class="subtitle">
+                                        {{ userPost.post }}<br>
+                                    </p>
+                                    {{ userPost.filmCam }} , {{ userPost.filmRoll }}<br>
+                                    <time datetime="1-1-2016">{{ userPost.postDate }}</time>
+                                    <img src='{{ userPost.imagepath }}'><br>
+                                </div>
+                        </article>
+                    
+                {% endfor %}
+                <!-- <footer class="card-footer">
+                    <p class="card-footer-item">
+                    <span>
+                        View on <a href="https://twitter.com/codinghorror/status/506010907021828096">Twitter</a>
+                    </span>
+                    </p>
+                    <p class="card-footer-item">
+                    <span>
+                        Share on <a href="#">Facebook</a>
+                    </span>
+                    </p>
+                </footer> -->
+            {% endif %}
+        </div>
+
+        <div class="column is-3">
+            <div class="card">
+                <header class="card-header">
+                    <p class="card-header-title is-capitalized">
+                    About {{ fname }} {{ lname }}
+                    </p>
+                </header>
+                <div class="card-content">
+                    <div class="content">
+                        
+                            {{ about_me }}
+                        <hr>
+                        <label class="label is-dark" style="font-size: 10px;">ALL TIME FILM CAMERA</label><br>
+                        
+                            {{ favecam }}
+                        <hr>
+                        <label class="label is-dark" style="font-size: 10px;">FAVORITE FILM ROLL</label><br>
+                            {{ faveroll }}
+                        <hr>
+                        <label class="label is-dark" style="font-size: 10px;">SHOOTS</label><br>
+                            {{ favesubject }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        </div>
+    </div>
+</div>
+{% endblock %}

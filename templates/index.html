@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}{% endblock %}
+        {% block content %}
+            <div class="columns is-mobile is-centered" style="margin-top: 10px;">
+                <div class="column is-half-desktop">
+                    <div id="content">
+                        <div class="hero-body">
+                            <div class="container has-text-centered is-white">
+                                <h1 class="font1">
+                                    It's a gathering, spreading the love called
+                                    <span style="font-size: 60px;">LOMOLOVE.</span>     
+                                </h1>
+                                <h2 class="subtitle font1">
+                                    We believe photography should be shared. <br>We're striving to bring back the love for film photography. 
+                                </h2><br>
+                                <a class="lomoOn" href="/lomoOn" style="font-size: 25px;">LOMO ON!</a>
+                                
+                                <div class="control has-text-centered" style="margin-top: 40px;"> 
+                                    <p class="help is-white">Already have an account?</p>  
+                                    <a class="sign" href="{{ url_for('authen .login') }}"><u>SIGN IN</u></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div> 
+        {% endblock %}

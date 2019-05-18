@@ -1,0 +1,7 @@
+flask
+flask-sqlalchemy
+mysqlclient
+WTForms
+flask-login
+python-dateutil
+# flask_script
