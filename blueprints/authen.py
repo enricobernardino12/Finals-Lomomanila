@@ -14,7 +14,6 @@ def login():
     if current_user.is_authenticated:
         flash('You are aldready Signed In')
         return redirect(url_for('main.profile')) 
-    
 
     return render_template('login.html')
 
