@@ -2,6 +2,14 @@
 {% block title %}- PROFILE{% endblock %}
 
 {% block content %}
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+    <div class="notification is-danger">
+        {{ messages[0] }}
+    </div>
+{% endif %}
+{% endwith %}
+
 <script>
     'use strict';
         document.addEventListener('DOMContentLoaded', function () {
@@ -46,6 +54,8 @@
         }
     });
 </script>
+
+
 
 <div class="container is-mobile is-centered" style="margin: 20px 50px;">
     <div class="columns is-centered">
@@ -106,6 +116,7 @@
                 </div>
                 
                 <footer class="card-footer">
+                    
                     <a href="#" class="card-footer-item modal-button" data-target="modal-ter" aria-haspopup="true" style="color: #7A3934;">EDIT PROFILE</a>
                 <!-- MODAL -->
                     <div id="modal-ter" class="modal">
@@ -132,19 +143,19 @@
                                             <hr>
 
                                             <label class="label is-dark" style="font-size: 10px;">FAVORITE CAMERA</label>
-                                            <textarea class="input is-light is-focused" style="width:20em;"  type="text" name="favecam" placeholder="{{ favecam }}"></textarea>
+                                            <input class="input is-light is-focused" style="width:20em;" type="text" name="favecam" value="{{ favecam }}">
                                             <hr>
 
                                             <label class="label is-dark" style="font-size: 10px;">FAVORITE ROLL</label>
-                                            <textarea class="input is-light is-focused" style="width:20em;"  type="text" name="faveroll" placeholder="{{ faveroll }}"></textarea>
+                                            <input class="input is-light is-focused" style="width:20em;" type="text" name="faveroll" value="{{ faveroll }}">
                                             <hr>
 
                                             <label class="label is-dark" style="font-size: 10px;">FAVORITE SUBJECT</label>
-                                            <textarea class="input is-light is-focused" style="width:20em;"  type="text" name="favesubj" placeholder="{{ favesubj }}"></textarea>
+                                            <input class="input is-light is-focused" style="width:20em;" type="text" name="favesubj" value="{{ favesubject }}">
                                             <hr>
 
                                             <label class="label is-dark" style="font-size: 10px;">INSTAGRAM ACCOUNT</label>
-                                            <textarea class="input is-light is-focused" style="width:20em;"  type="text" name="instagram_account" placeholder="{{ instagram_account }}"></textarea>
+                                            <input class="input is-light is-focused" style="width:20em;" type="text" name="instagram_account" value="{{ instagram_account }}">
                                             <hr>
                                             
                                             
@@ -197,7 +208,7 @@
                                                     </div>
                                                     <div class="column">
                                                         <label class="label is-dark" style="font-size: 10px;">BIRTHDATE</label>
-                                                        <input class="input is-light" style="width:15em;" type="date" name="editbdate" value="{{ bdate }}" placeholder="{{ bdate }}" required>
+                                                        <input class="input is-light" style="width:15em;" type="date" name="editbdate" value="{{ birthdate }}" placeholder="{{ birthdate }}" required>
                                                     </div>
                                                     <div class="column"></div>
                                                 </div>
@@ -208,7 +219,7 @@
                                                 <hr>
 
                                                 <label class="label is-dark" style="font-size: 10px;">PASSWORD</label>
-                                                <input class="input is-light is-focused" style="width:20em;" type="text" name="editpword" value="{{ pword }}">
+                                                <input class="input is-light is-focused" style="width:20em;" type="text" name="editpword" value="{{ password }}">
 
                                         </div>
                                     </section>

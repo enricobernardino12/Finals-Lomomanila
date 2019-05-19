@@ -2,3 +2,12 @@
     <input type="text" name="post" placeholder="Type post" > 
     <button type="submit" >submit</button>
 </form>
+
+{% extends "base.html" %}
+
+{% block content %}
+    <hr>
+    {% for post in posts %}
+        {% include '_post.html' %}
+    {% endfor %}
+{% endblock %}
