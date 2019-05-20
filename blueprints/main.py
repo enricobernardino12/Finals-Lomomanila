@@ -3,7 +3,10 @@ from flask import Blueprint, render_template, url_for, redirect, request, flash
 from werkzeug.security import generate_password_hash, check_password_hash
 from auth.forms import RegistrationForm
 from models import db
-from models import User, Post
+from models import User, Post, Comment
+from flask import Flask
+
+app = Flask (__name__)
 
 main = Blueprint('main', __name__)
 
@@ -14,23 +17,47 @@ def index():
     return render_template('index.html')
 
 
+
 @main.route('/home')
 @login_required
 def home():
+    posts = Post.query.order_by(Post.timestamp.desc()).all()
+    comments = Comment.query.order_by(Comment.timestamp.desc()).all()
+    len_posts = len(posts)
     
-    return render_template('home.html', post=current_user.post)
+    return render_template('home.html', title='Home', comments=comments, posts=posts, len_posts = len_posts
+                                                    , fname=current_user.fname, lname=current_user.lname,username=current_user.username, about_me=current_user.about_me, favecam=current_user.favecam, faveroll = current_user.faveroll, favesubject=current_user.favesubject, instagram_account=current_user.instagram_account)
+
+
+
+
 
 @main.route('/home', methods=['GET', 'POST'])
 @login_required
 def home_post():
-
-    body = request.form.get('post')
-
-    post = Post(body= body , author = current_user)
+    post = Post(
+                author = current_user ,
+                body = request.form.get("userPost") ,
+                used_cam = request.form.get('used_cam') ,
+                used_roll = request.form.get('used_roll')
+                )
     db.session.add(post)
     db.session.commit()
 
     flash('Your post is now live!')
+    return redirect(url_for('main.home'))
+
+@main.route('/comment', methods=['GET', 'POST'])
+@login_required
+def home_comment():
+    comment = Comment(
+                post_id = request.form.get("post"),
+                commentor = current_user,
+                body = request.form.get("body")
+                )
+    db.session.add(comment)
+    db.session.commit()
+
     return redirect(url_for('main.home'))
 
 
@@ -78,3 +105,25 @@ def editprofile_post():
 #         if posts.has_prev else None
 #     return render_template('user.html', user=user, posts=posts.items,
 #                            next_url=next_url, prev_url=prev_url)
+
+
+#FOLLOW AND UNFOLLOW
+
+
+# @main.route('/vote_up/<int:user_id>')
+# @login_required
+# def vote_up(user_id):
+#     if user_id == current_user:
+#         flash('You cannot your vote your Post!')
+#         return redirect(url_for('main.home'))
+
+#     if something == 
+        
+#     votes = vote(
+#             up_vote = ++1 
+#             )
+#     append(votes)
+#     db.session.commit()
+#     return redirect(url_for('main.home'))
+
+
