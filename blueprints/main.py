@@ -12,6 +12,35 @@ app = Flask (__name__)
 main = Blueprint('main', __name__)
 moment = Moment(app)
 
+from flask_mail import Mail
+from flask_mail import Message
+from flask_sqlalchemy import SQLAlchemy
+import os
+
+app = Flask(__name__)
+app.secret_key = 'BERNARDINO12'
+app.config['UPLOAD_FOLDER'] = './appdata/'
+app.config['MAIL_SERVER']='smtp.gmail.com'
+app.config['MAIL_PORT'] = 465
+app.config['MAIL_USERNAME'] = '201601103@iacademy.edu.ph'
+app.config['MAIL_PASSWORD'] = app.secret_key
+app.config['MAIL_USE_TLS'] = False
+app.config['MAIL_USE_SSL'] = True
+mail = Mail(app)
+APP_ROOT = os.path.dirname(os.path.abspath(__file__))
+@main.route('/sandbox')
+def send_email(in_subject, in_emailaddress, in_username, in_content):
+	msg = Message(in_subject,
+				ssender="bot@asamplesiteforum.com",
+				recipients=["201501330iacademy.edu.ph"])
+	msg.html = render_template('email.html',username=in_username,content=in_content)
+	mail.send(msg)
+	return 'OK'
+
+
+
+
+
 @main.route('/index')
 @main.route('/')
 def index():
@@ -38,6 +67,8 @@ def home():
 @main.route('/home', methods=['GET', 'POST'])
 @login_required
 def home_post():
+    email = current_user.email
+    username = current_user.username
     post = Post(
                 author = current_user ,
                 body = request.form.get("userPost") ,
@@ -46,6 +77,7 @@ def home_post():
                 )
     db.session.add(post)
     db.session.commit()
+    send_email("Your post is now live in LOMOMANILA!", email, username, "Post is now live. Thank you! LOMON!")
 
     flash('Your post is now live!')
     return redirect(url_for('main.home'))
@@ -106,16 +138,3 @@ def like_action(post_id, action):
 
     
     
-@main.route('/')
-def _view_index():
-	if request.args.get('sort') is not None and request.args.get('sort') != '':
-		if request.args.get('sort') == 'date':
-			posts = Post.query.order_by(Post.post_date.asc()).all()
-		if request.args.get('sort') == 'comments':
-			posts = Post.query.order_by(Post.post_comment_count.desc()).all()
-		if request.args.get('sort') == 'karma':
-			posts = Post.query.order_by(Post.post_karma_count.desc()).all()
-	else:
-		posts = Post.query.order_by(Post.post_date.desc()).all()
-
-	return render_template('index.html', posts=posts)

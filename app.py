@@ -45,38 +45,7 @@ app.register_blueprint(authen_blueprint)
 from blueprints.main import main as main_blueprint
 app.register_blueprint(main_blueprint)
 
-#Mail part
 
-# from flask import Flask
-# from flask_mail import Mail
-# from flask_mail import Message
-# from app import mail
-
-# app = Flask(__name__)
-# app.config['MAIL_SERVER'] = 'smtp.gmail.com'
-# app.config['MAIL_PORT'] = 587
-# app.config['MAIL_USE_TLS'] = True
-# app.config['MAIL_USERNAME'] = 'alee.policarpio@iacademy.edu.ph'
-# app.config['MAIL_PASSWORD'] = 'password'
-# app.config['MAIL_DEFAULT_SENDER'] = 'alee.policarpio@iacademy.edu.ph'
-# mail = Mail(app)
-
-
-# def send_email(subject, sender, recipients, text_body, html_body):
-#     msg = Message(subject, sender=sender, recipients=recipients)
-#     msg.body = text_body
-#     msg.html = html_body
-#     mail.send(msg)
-
-# from email import send_email
-# @app.route('/signup', methods=['POST'])
-# def signup():
-#     user = User(name=request.form.get('name'), password=request.form.get('password'), email=request.form.get('email'))
-#     db.session.add(user)
-#     db.session.commit()
-#     message = 'Welcome to my forum'
-#     send_email('Welcome', 'alee.policarpio@iacademy.edu.ph', [email=user.email], message, message)
-#     return render_template('home.html', user=user)
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", debug=True)

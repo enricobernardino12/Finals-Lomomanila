@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template,url_for, redirect, request,flash
+from flask import Flask, Blueprint, render_template,url_for, redirect, request,flash
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_user, logout_user, login_required, current_user
 from auth.forms import RegistrationForm
@@ -7,6 +7,39 @@ from models import User
 from datetime import datetime
 
 authen = Blueprint('authen ', __name__)
+
+
+#mail
+app = Flask (__name__)
+from flask_mail import Mail
+from flask_mail import Message
+from flask_sqlalchemy import SQLAlchemy
+import os
+
+app = Flask(__name__)
+app.secret_key = 'BERNARDINO12'
+app.config['UPLOAD_FOLDER'] = './appdata/'
+app.config['MAIL_SERVER']='smtp.gmail.com'
+app.config['MAIL_PORT'] = 465
+app.config['MAIL_USERNAME'] = '201601103@iacademy.edu.ph'
+app.config['MAIL_PASSWORD'] = app.secret_key
+app.config['MAIL_USE_TLS'] = False
+app.config['MAIL_USE_SSL'] = True
+mail = Mail(app)
+db = SQLAlchemy(app)
+APP_ROOT = os.path.dirname(os.path.abspath(__file__))
+
+@authen.route('/sandbox')
+def send_email(in_subject, in_emailaddress, in_username, in_content):
+	msg = Message(in_subject,
+				sender="201601103@iacademy.edu.ph",
+				recipients=["201601103@iacademy.edu.ph"])
+	msg.html = render_template('email.html',username=in_username,content=in_content)
+	mail.send(msg)
+	return 'OK'
+
+
+
 
 @authen.route('/login')
 def login():
@@ -68,7 +101,7 @@ def signup_post():
     new_user = User(username=username, fname=fname, lname=lname, email=email, instagram_account=instagram_account,password=generate_password_hash(password,method='sha256'))
     db.session.add(new_user)
     db.session.commit()
-
+    send_email("Welcome to LOMOMANILA!", email, username, "Thank you for registering! LOMON!")
     return redirect(url_for('authen .login'))
 
 

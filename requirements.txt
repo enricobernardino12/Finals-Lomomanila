@@ -4,6 +4,6 @@ mysqlclient
 WTForms
 flask-login
 python-dateutil
-flask-mail
+flask_mail==0.9.0
 flask-moment
 # flask_script
