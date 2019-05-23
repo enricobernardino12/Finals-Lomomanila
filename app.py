@@ -45,49 +45,38 @@ app.register_blueprint(authen_blueprint)
 from blueprints.main import main as main_blueprint
 app.register_blueprint(main_blueprint)
 
+#Mail part
+
+# from flask import Flask
+# from flask_mail import Mail
+# from flask_mail import Message
+# from app import mail
+
+# app = Flask(__name__)
+# app.config['MAIL_SERVER'] = 'smtp.gmail.com'
+# app.config['MAIL_PORT'] = 587
+# app.config['MAIL_USE_TLS'] = True
+# app.config['MAIL_USERNAME'] = 'alee.policarpio@iacademy.edu.ph'
+# app.config['MAIL_PASSWORD'] = 'password'
+# app.config['MAIL_DEFAULT_SENDER'] = 'alee.policarpio@iacademy.edu.ph'
+# mail = Mail(app)
 
 
-# @app.route('/login', methods=['POST', 'GET'])
-# def loginForm():
+# def send_email(subject, sender, recipients, text_body, html_body):
+#     msg = Message(subject, sender=sender, recipients=recipients)
+#     msg.body = text_body
+#     msg.html = html_body
+#     mail.send(msg)
 
-#     if request.method == 'GET' :
-#         return render_template('login.html', value=0)
-#     elif request.method == 'POST' :
-#         session['username'] = request.form['username']
-#         password = request.form['password']
-#         user = User.query.filter_by(username=session['username'], pword=password).first() #filter results ; .all() -return all tasks
-#         if not user:
-#             session.clear()
-#             return render_template('login.html', test=2, value=0)
-#         return redirect(url_for('home'))
-#     return render_template('login.html', value=0)
-
-
-# @app.route('/register', methods=['GET', 'POST'])
-# def register():
-#     form = RegistrationForm(request.form)
-#     if request.method == 'POST' and form.validate():
-#         users = user(username=form.username.data, email = form.email.data, instagram_account = form.instagram_account.data, password = form.password.data)
-#         db.session.add(users)
-#         db.session.commit()
-#         flash('Thanks for registering')
-#         return redirect(url_for('login'))
-#     return render_template('register.html', form=form)
-
-# @app.route('/test-connection')
-# def hello():
-#     try:
-#         db.session.query('1').all()
-#         return 'Connected.'
-#     except Exception as e:
-#         return str(e)
-
-
-
-# UPDATE #
-
-#For login
-
+# from email import send_email
+# @app.route('/signup', methods=['POST'])
+# def signup():
+#     user = User(name=request.form.get('name'), password=request.form.get('password'), email=request.form.get('email'))
+#     db.session.add(user)
+#     db.session.commit()
+#     message = 'Welcome to my forum'
+#     send_email('Welcome', 'alee.policarpio@iacademy.edu.ph', [email=user.email], message, message)
+#     return render_template('home.html', user=user)
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", debug=True)
